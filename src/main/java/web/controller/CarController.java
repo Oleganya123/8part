@@ -17,8 +17,14 @@ public class CarController {
     }
 
     @GetMapping("/cars")
-    public String getCars(@RequestParam(value = "count", required = false, defaultValue = "5") int count, Model model) {
-        model.addAttribute("cars", carService.getCars(count));
+    public String getCars(
+            @RequestParam(value = "count", required = false, defaultValue = "5") int count,
+            Model model
+    ) {
+        model.addAttribute(
+                "cars",
+                carService.getCars(count)
+        );
         return "cars";
     }
 }
