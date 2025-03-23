@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<body>
+<h1>Users</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+
+            <form action="/updateUser" method="post" style="display: inline;">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <input type="text" name="name" th:value="${user.name}">
+                <input type="text" name="email" th:value="${user.email}">
+                <button type="submit">Edit</button>
+            </form>
+
+            <form action="/deleteUser" method="post" style="display: inline;">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Add User</h2>
+<form action="/addUser" method="post">
+    Name: <input type="text" name="name"><br>
+    Email: <input type="text" name="email"><br>
+    <input type="submit" value="Add User">
+</form>
+
+<h2>Update User</h2>
+<form action="/updateUser" method="post">
+    ID: <input type="text" name="id"><br>
+    Name: <input type="text" name="name"><br>
+    Email: <input type="text" name="email"><br>
+    <input type="submit" value="Update User">
+</form>
+</body>
+</html>
