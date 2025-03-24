@@ -9,7 +9,6 @@ import web.model.User;
 import java.util.List;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
@@ -24,16 +23,19 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
+    @Transactional
     @Override
     public void addUser(User user) {
         userDao.addUser(user);
     }
 
+    @Transactional
     @Override
     public void updateUser(User user) {
         userDao.updateUser(user);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         userDao.deleteUser(id);

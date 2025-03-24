@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import web.model.User;
 import web.service.UserService;
 
-import javax.validation.Valid;
+import javax.validation.*;
+
+
 
 @Controller
 public class UserController {
@@ -42,24 +44,20 @@ public class UserController {
 
     @GetMapping("/editUser")
     public String editUserForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("editUser", userService.getUserById(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "users";
     }
 
     @PostMapping("/updateUser")
-    public String updateUser(@RequestParam("id") Long id,
-                             @Valid @ModelAttribute("editUser") User user,
-                             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("users", userService.getAllUsers());
-            return "users";
-        }
-
-        User existingUser = userService.getUserById(id);
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
-        userService.updateUser(existingUser);
-
+    public String updateUser(
+            @RequestParam("id") Long id,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email
+    ) {
+        User user = userService.getUserById(id);
+        user.setName(name);
+        user.setEmail(email);
+        userService.updateUser(user);
         return "redirect:/users";
     }
 
