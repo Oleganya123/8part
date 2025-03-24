@@ -42,19 +42,24 @@ public class UserController {
 
     @GetMapping("/editUser")
     public String editUserForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("editUser", userService.getUserById(id));
         return "users";
     }
 
     @PostMapping("/updateUser")
     public String updateUser(@RequestParam("id") Long id,
-                             @RequestParam("name") String name,
-                             @RequestParam("email") String email) {
-        User user = userService.getUserById(id);
-        user.setName(name);
-        user.setEmail(email);
-        userService.updateUser(user);
+                             @Valid @ModelAttribute("editUser") User user,
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("users", userService.getAllUsers());
+            return "users";
+        }
+
+        User existingUser = userService.getUserById(id);
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        userService.updateUser(existingUser);
+
         return "redirect:/users";
     }
 
