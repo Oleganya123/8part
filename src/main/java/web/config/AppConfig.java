@@ -28,7 +28,7 @@ public class AppConfig {
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("db.driver"));
-        dataSource.setUrl(env.getProperty("db.url"));
+        dataSource.setUrl(env.getProperty("db.url") + "?useUnicode=true&characterEncoding=UTF-8");
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
         return dataSource;
@@ -42,11 +42,15 @@ public class AppConfig {
 
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
         em.setJpaVendorAdapter(vendorAdapter);
 
         Properties props = new Properties();
-        props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-        props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql", "true"));
+        props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto", "update"));
+        props.put("hibernate.connection.charSet", "UTF-8");
+        props.put("hibernate.connection.characterEncoding", "UTF-8");
+        props.put("hibernate.connection.useUnicode", "true");
         em.setJpaProperties(props);
 
         return em;

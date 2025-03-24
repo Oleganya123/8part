@@ -3,10 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
+    <style>
+        .error { color: red; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 80px; }
+        table { margin-bottom: 20px; border-collapse: collapse; }
+        th, td { padding: 8px; border: 1px solid #ddd; }
+        .action-form { display: inline; }
+    </style>
 </head>
 <body>
-<h1>Users</h1>
-<table border="1">
+<h1>Users Management</h1>
+
+<form th:action="@{/addUser}" th:object="${user}" method="post">
+    <h2>Add User</h2>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" th:field="*{name}">
+        <span th:if="${#fields.hasErrors('name')}"
+              th:errors="*{name}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}">
+        <span th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}" class="error"></span>
+    </div>
+    <button type="submit">Add User</button>
+</form>
+
+<h2>User List</h2>
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -22,14 +49,14 @@
         <td th:text="${user.email}"></td>
         <td>
 
-            <form action="/updateUser" method="post" style="display: inline;">
+            <form class="action-form" th:action="@{/updateUser}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
-                <input type="text" name="name" th:value="${user.name}">
-                <input type="text" name="email" th:value="${user.email}">
-                <button type="submit">Edit</button>
+                <input type="text" name="name" th:value="${user.name}" required>
+                <input type="text" name="email" th:value="${user.email}" required>
+                <button type="submit">Update</button>
             </form>
 
-            <form action="/deleteUser" method="post" style="display: inline;">
+            <form class="action-form" th:action="@{/deleteUser}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <button type="submit">Delete</button>
             </form>
@@ -37,20 +64,5 @@
     </tr>
     </tbody>
 </table>
-
-<h2>Add User</h2>
-<form action="/addUser" method="post">
-    Name: <input type="text" name="name"><br>
-    Email: <input type="text" name="email"><br>
-    <input type="submit" value="Add User">
-</form>
-
-<h2>Update User</h2>
-<form action="/updateUser" method="post">
-    ID: <input type="text" name="id"><br>
-    Name: <input type="text" name="name"><br>
-    Email: <input type="text" name="email"><br>
-    <input type="submit" value="Update User">
-</form>
 </body>
 </html>
