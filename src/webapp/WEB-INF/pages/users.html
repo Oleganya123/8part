@@ -49,11 +49,9 @@
         <td th:text="${user.email}"></td>
         <td>
 
-            <form class="action-form" th:action="@{/updateUser}" method="post">
+            <form class="action-form" th:action="@{/editUser}" method="get">
                 <input type="hidden" name="id" th:value="${user.id}">
-                <input type="text" name="name" th:value="${user.name}" required>
-                <input type="text" name="email" th:value="${user.email}" required>
-                <button type="submit">Update</button>
+                <button type="submit">Edit</button>
             </form>
 
             <form class="action-form" th:action="@{/deleteUser}" method="post">
@@ -64,5 +62,21 @@
     </tr>
     </tbody>
 </table>
+
+<div th:if="${editUser != null}">
+    <h2>Edit User</h2>
+    <form th:action="@{/updateUser}" method="post">
+        <input type="hidden" name="id" th:value="${editUser.id}">
+        <div class="form-group">
+            <label>Name:</label>
+            <input type="text" name="name" th:value="${editUser.name}">
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="text" name="email" th:value="${editUser.email}">
+        </div>
+        <button type="submit">Update</button>
+    </form>
+</div>
 </body>
 </html>
